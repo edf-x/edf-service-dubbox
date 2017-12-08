@@ -92,10 +92,10 @@ function bindApiMapper(mappers) {
             let signature = function (data) {
                 let methodArguments = arguments
                 let args = methodInfo.parameters.map((arg, index) => {
-                    let value = data && data[arg.$name] || methodArguments[index] || data
-                    if (methodArguments.length > 1 && methodInfo.parameters.length == methodArguments.length) {
+                    let value = data //&& data[arg.$name] || methodArguments[index] || data
+                    if (methodArguments.length >= 1 && methodInfo.parameters.length == methodArguments.length) {
                         value = methodArguments[index]
-                    } else if (methodArguments.length == 1 && data[arg.$name] !== undefined) {
+                    } else if (methodArguments.length == 1 && data[arg.$name] !== undefined && isSameType(data[arg.$name], arg)) {
                         value = data[arg.$name]
                     }
                     return Object.assign({}, arg, { $: value })
@@ -109,6 +109,14 @@ function bindApiMapper(mappers) {
     Object.assign(nzdServer.dependencies, apis)
     serviceProxy(apis, api)
 }
+
+function isSameType (data, arg) {
+    let isDataObj = typeof data == 'object',
+        isArgObj = arg.$class.indexOf('.') != -1 && arg.$class.indexOf('java.') != 0
+
+    return isDataObj == isArgObj
+}
+
 
 function startServer() {
     if (config.services._delayStart) {
