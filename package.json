@@ -1,6 +1,6 @@
 {
-  "name": "mk-service-dubbox",
-  "version": "1.2.6",
+  "name": "edf-service-dubbox",
+  "version": "1.2.7",
   "description": "",
   "main": "index.js",
   "directories": {
@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lishengguo/mk-service-dubbox.git"
+    "url": "git+https://github.com/edf-x/edf-service-dubbox.git"
   },
   "author": "lsg",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/lishengguo/mk-service-dubbox/issues"
+    "url": "https://github.com/edf-x/edf-service-dubbox/issues"
   },
-  "homepage": "https://github.com/lishengguo/mk-service-dubbox#readme",
+  "homepage": "https://github.com/edf-x/edf-service-dubbox#readme",
   "dependencies": {
     "mk-server": "^1.2.4",
     "mk-service-auth": "^1.0.7",
