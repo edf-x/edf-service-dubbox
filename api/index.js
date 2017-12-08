@@ -175,9 +175,9 @@ function serviceProxy(services, api) {
 
 function stringfyError(err) {
     let error = { message: err.message }
-    if (err && err.message && err.message.indexOf("com.rrtimes.rap.vo.BusinessException:") == 0) {
+    if (err && err.message && err.message.indexOf("com.ttk.edf.base.BusinessException:") == 0) {
         console.log("接口中未注明抛出业务异常：throws BusinessException;")
-        error.message = err.message.split('com.rrtimes.rap.vo.BusinessException:')[1]
+        error.message = err.message.split('com.ttk.edf.base.BusinessException:')[1]
     }
     if (err.cause && err.cause.code) {
         error.code = err.cause.code

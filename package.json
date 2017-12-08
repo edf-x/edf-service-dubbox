@@ -1,6 +1,6 @@
 {
   "name": "edf-service-dubbox",
-  "version": "1.2.7",
+  "version": "1.2.9",
   "description": "",
   "main": "index.js",
   "directories": {
@@ -20,8 +20,8 @@
   },
   "homepage": "https://github.com/edf-x/edf-service-dubbox#readme",
   "dependencies": {
-    "mk-server": "^1.2.4",
-    "mk-service-auth": "^1.0.7",
+    "edf-server": "^1.2.4",
+    "edf-service-auth": "^1.0.7",
     "hessian.js": "^2.1.8",
     "node-zookeeper-client": "0.2.2"
   }
