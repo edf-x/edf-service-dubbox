@@ -89,7 +89,7 @@ function bindApiMapper(mappers) {
                     methodInfo.isUpoladFile = true
                 }
             })
-            let signature = function (data) {
+            let signature = function (data, ctx) {
                 let methodArguments = arguments
                 let args = methodInfo.parameters.map((arg, index) => {
                     let value = data //&& data[arg.$name] || methodArguments[index] || data
@@ -98,7 +98,9 @@ function bindApiMapper(mappers) {
                     } else if (methodArguments.length == 1 && data[arg.$name] !== undefined && isSameType(data[arg.$name], arg)) {
                         value = data[arg.$name]
                     }
-                    return Object.assign({}, arg, { $: value })
+                    // return Object.assign({}, arg, { $: value })
+                    arg = Object.assign({}, arg, { $: value })
+                    return Object.assign({}, arg, { $: parseArgObj(arg, ctx) })
                 })
                 return args
             }
@@ -111,7 +113,7 @@ function bindApiMapper(mappers) {
 }
 
 function isSameType (data, arg) {
-    let isDataObj = typeof data == 'object' || typeof data == 'string' && data == "[object Object]",
+    let isDataObj = typeof data == 'object' || (typeof data == 'string' && data == "[object Object]"),
         isArgObj = arg.$class.indexOf('.') != -1 && arg.$class.indexOf('java.') != 0
 
     return isDataObj == isArgObj
@@ -146,11 +148,12 @@ function serviceProxy(services, api) {
         if (apiUrl) {
             //dubbox.api.ILoginService_Ping
             let handlerWrapper = function (data, ctx) {
-                let argsInfo = signature(data)
+                // let argsInfo = signature(data)
                 let returnType = signature.methodInfo.returnType
-                let args = argsInfo.map(arg => parseArgObj(arg, ctx))
+                // let args = argsInfo.map(arg => parseArgObj(arg, ctx))
                 console.log(`call dubbox api : ${key}.${methodName}`)
-                return nzdServer[key][methodName](...args)
+                // return nzdServer[key][methodName](args)
+                return nzdServer[key][methodName](data, ctx)
                     .then(toJS)
                     .then(result => {
                         if (result && returnType && config.fileTypeName
