@@ -70,7 +70,7 @@ function bindApiMapper(mappers) {
         if (itf.fields) {
             return regist(itf.name, itf.fields, itf.instance)
         }
-        let key = itf.name.split(".").pop()
+        let key = itf.name//.split(".").pop()
         itf.methodSignature = {}
         itf.interface = itf.name
         apis[key] = itf
@@ -93,7 +93,7 @@ function bindApiMapper(mappers) {
                 let methodArguments = arguments
                 let args = methodInfo.parameters.map((arg, index) => {
                     let value = data //&& data[arg.$name] || methodArguments[index] || data
-                    if (methodArguments.length >= 1 && methodInfo.parameters.length == methodArguments.length) {
+                    if (methodArguments.length >= 1 && methodInfo.parameters.length == methodArguments.length && isSameType(methodArguments[index], arg)) {
                         value = methodArguments[index]
                     } else if (methodArguments.length == 1 && data[arg.$name] !== undefined && isSameType(data[arg.$name], arg)) {
                         value = data[arg.$name]
@@ -111,12 +111,11 @@ function bindApiMapper(mappers) {
 }
 
 function isSameType (data, arg) {
-    let isDataObj = typeof data == 'object',
+    let isDataObj = typeof data == 'object' || typeof data == 'string' && data == "[object Object]",
         isArgObj = arg.$class.indexOf('.') != -1 && arg.$class.indexOf('java.') != 0
 
     return isDataObj == isArgObj
 }
-
 
 function startServer() {
     if (config.services._delayStart) {
