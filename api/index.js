@@ -46,7 +46,7 @@ function requestMapper(services) {
                 nzdServer[itf][method](children)
                     .then(toJS)
                     .then(apiMapInfo => {
-                        console.log(JSON.stringify(apiMapInfo))
+                        // console.log(JSON.stringify(apiMapInfo))
                         bindApiMapper(apiMapInfo, nzdServer)
                         jobCount--
                         if (jobCount == 0) {
@@ -59,6 +59,13 @@ function requestMapper(services) {
                             startServer()
                         }
                     })
+            }
+            else {
+                console.log("itf not found: " + itf)
+                jobCount--
+                if (jobCount == 0) {
+                    startServer()
+                }
             }
         })
     })
@@ -119,7 +126,9 @@ function bindApiMapper(mappers) {
 }
 
 function isSameType (data, arg) {
-    let isDataObj = typeof data == 'object' || (typeof data == 'string' && data == "[object Object]"),
+    let isDataObj = !(data instanceof String)
+                    && !(data instanceof Boolean)
+                    && typeof data == 'object' || (typeof data == 'string' && data == "[object Object]"),
         isArgObj = arg.$class.indexOf('.') != -1 && arg.$class.indexOf('java.lang.') != 0
 
     return isDataObj == isArgObj
