@@ -91,8 +91,8 @@ const SERIALIZER = {
     'Bool': obj => ifNullElse(obj, null, toBoolean),
     'double': obj => ifNullElse(obj, 0, Number),
     'Double': obj => ifNullElse(obj, null, Number),
-    'long': obj => ifNullElse(obj, 0, patchForHessian),
-    'Long': obj => ifNullElse(obj, null, patchForHessian),
+    'long': obj => ifNullOrEmptyElse(obj, 0, patchForHessian),
+    'Long': obj => ifNullOrEmptyElse(obj, null, patchForHessian),
     'int': obj => ifNullElse(obj, 0, Number),
     'Int': obj => ifNullElse(obj, null, Number),
     'string': obj => ifNullElse(obj, '', String),
@@ -116,6 +116,14 @@ function toBoolean(v) {
 
 function ifNullElse(val, def, fun) {
     if (val === null || val === undefined) {
+        return def
+    } else {
+        return fun(val)
+    }
+}
+
+function ifNullOrEmptyElse(val, def, fun) {
+    if (val === null || val === undefined || val === '') {
         return def
     } else {
         return fun(val)
@@ -217,7 +225,7 @@ const remove$ = (obj) => {
             //console.log('have '+obj.$class) 
             return UNSERIALIZER[mapKey](obj.$)
         } else if (SERIALIZER_MAP.__registed) {
-            console.log('not found: ' + obj.$class)
+            // console.log('not found: ' + obj.$class)
         }
     }
     if (obj && obj.$) return remove$(obj.$)
